@@ -1,23 +1,22 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { createUser } = require('../controllers/user-controller');
-const { User, Book } = require('../models');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if(context.user){
-                const foundUser = await User.findOne({_id: context.user._id})
+                const userData = await User.findOne({_id: context.user._id})
                 .select('-password')
-                return foundUser;
+                return userData;
             }
             throw new AuthenticationError('Cannot find a user with this id!')
         }
     },
 
     Mutation: {
-        addUser: async (parent,{username, email, password}) => {
-            const user = await User.create(username, email, password);
+        addUser: async (parent, args) => {
+            const user = await User.create(args);
             const token = signToken(user);
             return { token, user }
         },
@@ -36,28 +35,28 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        saveBook: async(parent, {authors, description, title, bookId, image, link}, context) => {
+        saveBook: async(parent, args, context) => {
             if (context.user){
 
-                const savedBook = await User.findByIdAndUpdate(
+                const updatedUser = await User.findByIdAndUpdate(
                     {_id: context.user._id},
-                    {$push: {savedBooks: authors, description, title, bookId, image, link}},
+                    {$addToSet: {savedBook: args.input}},
                     {new: true}
                 );
-                return savedBook;
+                return updatedUser;
             }
             throw new Error('You need to be logged in!');
         },
-        removeBook: async({bookId}, context) => {
+        removeBook: async(parent, args, context) => {
             if(context.user) {
-                const deletedBook = await Book.findByIdAndDelete(
-                    {_id: bookId},
-                    {$push: {saveBook: {bookId}}},
+                const updatedUser = await User.findOneAndDelete(
+                    {_id: context.user._id},
+                    {$push: {saveBook: {bookId: args.bookId}}},
                     {new: true}
                 )
-                return deletedBook;
+                return updatedUser;
             }
-            throw new Error("Can't remove the book");
+            throw new AuthenticationError("Can't remove the book");
         }
     }
 };
