@@ -12,11 +12,13 @@
 
 This app is a book search engine that stores and search books 
   
-
-
   # Installation
+  
   The following necessary dependencies must be installed to run the application properly:git clone it, npm i in root and then npm run develop.
 
+# Deployed app
+
+https://pure-reaches-34799.herokuapp.com/
 
   # Image
   
