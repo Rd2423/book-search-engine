@@ -9,8 +9,8 @@ import { REMOVE_BOOK } from '../utils/mutations';
 const SavedBooks = () => {
 
   const [removeBook, {error}] = useMutation(REMOVE_BOOK);
-  const [loading, data] = useQuery(GET_ME);
-  const userData = data?.me || [];
+  const {loading, data: user} = useQuery(GET_ME);
+  const userData = user?.me || {};
   
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -51,12 +51,12 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {userData?.savedBooks?.length
+            ? `Viewing ${userData?.savedBooks?.length} saved ${userData?.savedBooks?.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {userData?.savedBooks?.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
