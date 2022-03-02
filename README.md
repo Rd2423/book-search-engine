@@ -1,16 +1,18 @@
   # Book-searcb-engine
+ Book Search engine build with JavaScript, ReactJS, NodeJS, GraphQL Apollo.
+  Book search engine is search engine using the Search Book API from Google.
+  User can search and save books. If the users want to save a book he will need to logged in or signup with the signup form. 
+
 
   # Table of Contents
-   * Description
   * Installation 
-  * usage
-  * Contributing
-  * Tests
+  * Deployed app
+  * Image
+  * License
+  * Contributor
   * Questions
   
-  # Description
 
-This app is a book search engine that stores and search books 
   
   # Installation
   
@@ -39,3 +41,6 @@ https://pure-reaches-34799.herokuapp.com/
   # Contributors
   
   Contributors: Me
+  
+  # Questions
+  Feel free to ask me any questions regarding the app, here's my email: rayandiouf0@gmail.com
